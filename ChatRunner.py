@@ -1,10 +1,14 @@
 import ollama
-from yapper import Yapper, PiperSpeaker, PiperVoiceUK
+from ChatInitializer import ChatInitializer
+import subprocess
+
+#start ollama server and wait
+subprocess.Popen(["ollama", "serve"]).wait(300)
 
 messages = []
+chat_initializer = ChatInitializer()
 
 def chat_loop():
-    yapper = initialize_speech_to_text()
     while True:
         user_input=get_user_input()
         if user_input.lower() == "exit":
@@ -13,23 +17,16 @@ def chat_loop():
 
         response_string = chat()
         print()
-        yapper.yap(response_string, plain=True)
+        chat_initializer.get_yapper().yap(response_string, plain=True)
         append_messages("assistant", response_string)
 
-
-def initialize_speech_to_text():
-    return Yapper(
-        speaker = PiperSpeaker(
-            voice = PiperVoiceUK.ALBA
-        )
-    )
-
+#speech input to be added
 def get_user_input():
     return input("You: ")
 
 def chat():
     stream = ollama.chat(
-        model="marah",
+        model=chat_initializer.get_model(),
         messages=messages,
         stream=True,
     )
