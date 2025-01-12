@@ -5,14 +5,15 @@ The personal goal of this project is to create an interactable chatbot to use fo
 
 ## Design
  Using Ollama to interact with a locally running LLM, the user can specify the Ollama model file to use, along with choosing a specific Piper Voice for speech output. 
-The entire process is offline using locally hosted models and software.
-The below diagram specifies current features alrady implemented:
+The entire process is offline using locally hosted models and python libraries.
+The below diagram specifies current features already implemented:
 
-![Python AI Chatbot](https://github.com/user-attachments/assets/74ea022f-a02e-403c-9135-23051e103edc)
+![Python AI Chatbot](https://github.com/user-attachments/assets/5bcf8afc-8846-4751-834e-352892c8ec48)
+
 
 ## Future Development
 The main features still to be implemented :
-- [ ] Speech input
+- [x] Speech input
 - [ ] PNG/Avatar Output
 - [ ] Twitch input integration
 - [ ] Run speed optimization
