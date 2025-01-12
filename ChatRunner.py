@@ -1,12 +1,14 @@
 import ollama
 from ChatInitializer import ChatInitializer
 import subprocess
+import speech_recognition as sr
 
 #start ollama server and wait
 subprocess.Popen(["ollama", "serve"]).wait(300)
 
 messages = []
 chat_initializer = ChatInitializer()
+r = sr.Recognizer()
 
 def chat_loop():
     while True:
@@ -20,9 +22,22 @@ def chat_loop():
         chat_initializer.get_yapper().yap(response_string, plain=True)
         append_messages("assistant", response_string)
 
-#speech input to be added
+
 def get_user_input():
-    return input("You: ")
+    with sr.Microphone() as source:
+        print("Say something!")
+        audio = r.listen(source)
+        print("Done listening")
+
+        try:
+            user_input = r.recognize_whisper(audio, language="english")
+            print("Whisper thinks you said " + user_input)
+        except sr.UnknownValueError:
+            print("Whisper could not understand audio")
+        except sr.RequestError as e:
+            print(f"Could not request results from Whisper; {e}")
+    return user_input
+
 
 def chat():
     stream = ollama.chat(
