@@ -1,13 +1,14 @@
 import ollama
 from ChatInitializer import ChatInitializer
 import subprocess
-import speechrecognition as sr
+import speech_recognition as sr
 
 #start ollama server and wait
 subprocess.Popen(["ollama", "serve"]).wait(300)
 
 messages = []
 chat_initializer = ChatInitializer()
+r = sr.Recognizer()
 
 def chat_loop():
     while True:
