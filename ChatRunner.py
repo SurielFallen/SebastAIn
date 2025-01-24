@@ -19,7 +19,6 @@ def chat_loop():
 
         response_string = chat()
         print()
-        chat_initializer.get_yapper().yap(response_string, plain=True)
         append_messages("assistant", response_string)
 
 
@@ -45,10 +44,18 @@ def chat():
         messages=messages,
         stream=True,
     )
+    yapper = chat_initializer.get_yapper()
     response_string = ""
+    combined_chunk_string = ""
     for chunk in stream:
-        print(chunk["message"]["content"], end="", flush=True)
-        response_string += chunk.message.content
+        chunk_string = chunk["message"]["content"]
+        print(chunk_string, end="", flush=True)
+        #response_string += chunk.message.content
+        if chunk_string.startswith(" ") and len(combined_chunk_string) >> 0:
+            yapper.yap(combined_chunk_string, plain=True)
+            combined_chunk_string = ""
+        combined_chunk_string += chunk_string
+
     return response_string
 
 def append_messages(role,message):
